@@ -16,6 +16,15 @@ const isProd = process.env.NODE_ENV === "production";
 export function createApp() {
   const app = express();
 
+  if (isProd) {
+    // Render (comme Heroku/Railway) termine le HTTPS au niveau du proxy et
+    // transmet la requête en HTTP en interne. Sans ça, Express voit une
+    // connexion "non sécurisée" et le module `cookies` (utilisé par
+    // cookie-session) refuse silencieusement de poser un cookie marqué
+    // `secure: true` — la session ne persiste jamais après le login.
+    app.set("trust proxy", 1);
+  }
+
   if (process.env.NODE_ENV !== "test") {
     app.use(morgan(isProd ? "combined" : "dev"));
   }
