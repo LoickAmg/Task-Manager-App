@@ -1,0 +1,19 @@
+{
+  "name": "task-manager-app",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev:server": "npm run dev --workspace server",
+    "dev:web": "npm run dev --workspace web",
+    "build:web": "npm run build --workspace web",
+    "start": "npm run start --workspace server",
+    "lint": "npm run lint --workspace server && npm run lint --workspace web",
+    "test": "npm run test --workspace server && npm run test --workspace web",
+    "db:migrate": "npm run db:migrate --workspace server",
+    "db:seed": "npm run db:seed --workspace server"
+  }
+}
