@@ -97,24 +97,6 @@ Le rendu Canvas/DOM du Kanban (drag & drop, mise en page de la modale de
 détail) a été vérifié visuellement (captures d'écran + simulation de
 glisser-déposer via Playwright) plutôt que par des tests automatisés.
 
-## Déploiement (Render + Neon)
-
-1. **Neon** : crée un projet Postgres gratuit sur [neon.tech](https://neon.tech),
-   récupère la `DATABASE_URL` (avec `?sslmode=require`).
-2. **Render** : crée un *Web Service* pointant sur ce repo.
-   - Build command : `npm ci && npm run build:web && npm run db:migrate`
-   - Start command : `npm start`
-   - Variables d'environnement : `DATABASE_URL` (celle de Neon),
-     `SESSION_SECRET` (valeur aléatoire), `NODE_ENV=production`,
-     `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` / `SEED_USER_NAME` (pour le
-     premier `db:seed`, à lancer une fois manuellement depuis le Shell
-     Render : `npm run db:seed`).
-3. Le plan gratuit de Render met le service en veille après 15 min
-   d'inactivité (le réveil prend ~1 min) — normal pour un projet perso.
-
-Aucune configuration Docker nécessaire : Render détecte Node.js et utilise
-directement les commandes ci-dessus.
-
 ## Licence
 
 MIT — voir [LICENSE](./LICENSE).
