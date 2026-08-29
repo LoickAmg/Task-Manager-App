@@ -10,14 +10,11 @@ Backend **Node.js/Express** (API REST) + **Drizzle ORM** + **PostgreSQL**,
 frontend **Vue 3** (Composition API) + **Pinia** + **Vite**, sans framework
 CSS (thème sombre écrit à la main).
 
-> La roadmap prévoyait Laravel (PHP) + Vue.js. Le backend a été pivoté vers
-> Node/Express car l'installateur PHP (Composer/Packagist) n'était pas
-> accessible dans mon environnement de build — même situation déjà
-> rencontrée sur le projet Manga Quoting. Vue.js reste bien le frontend.
-> Drizzle (plutôt que Prisma, utilisé sur d'autres projets) a été choisi
-> pour la même raison : Prisma télécharge un moteur binaire natif depuis
-> `binaries.prisma.sh`, également bloqué ici. Drizzle génère du SQL pur et
-> ne dépend d'aucun binaire externe.
+> **Choix d’architecture.** Node/Express fournit une API REST lisible et Vue 3
+> gère l’état de l’interface ; Drizzle garde les requêtes SQL et les migrations
+> explicites. Cette séparation permet de tester les règles du tableau côté API
+> et les interactions Kanban côté frontend sans confondre état d’interface et
+> autorisation serveur.
 
 ## Fonctionnalités
 
@@ -96,6 +93,12 @@ par exemple, est testé avec de vraies transactions SQL).
 Le rendu Canvas/DOM du Kanban (drag & drop, mise en page de la modale de
 détail) a été vérifié visuellement (captures d'écran + simulation de
 glisser-déposer via Playwright) plutôt que par des tests automatisés.
+
+## Permissions, concurrence et limites
+
+Le mode actuel est mono-utilisateur, mais le serveur ne doit jamais considérer un identifiant de board ou de tâche comme une preuve d’accès. Chaque route doit vérifier la session puis l’appartenance au board avant de lire ou modifier une ressource. Le schéma `board_members` prépare le partage ; il ne signifie pas que le partage est déjà activé dans l’interface.
+
+Le déplacement d’une tâche doit rester atomique côté serveur afin d’éviter deux positions incohérentes lors de mises à jour concurrentes. Les tests de permissions et de contraintes métier doivent être exécutés contre PostgreSQL, tandis que les données seedées (`admin@example.com` / `changeme123`) restent strictement réservées au développement local et doivent être remplacées avant toute exposition réseau.
 
 ## Licence
 

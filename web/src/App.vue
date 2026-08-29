@@ -17,7 +17,7 @@ async function handleLogout() {
 <template>
   <div class="app-shell">
     <header v-if="showTopbar" class="topbar">
-      <router-link to="/" class="brand">🗂️ Task Manager</router-link>
+      <router-link to="/" class="brand">Workbench / Tâches</router-link>
       <div class="topbar-user">
         <span>{{ auth.user?.name }}</span>
         <button class="btn-ghost" @click="handleLogout">Déconnexion</button>
